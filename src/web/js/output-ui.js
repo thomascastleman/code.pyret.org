@@ -34,10 +34,36 @@
 
     var converter = $.colorspaces.converter('CIELAB', 'hex');
 
+    var lightness = {};
+
+    // initialize lightness from local storage
+    if (localSettings.getItem('is-light-theme') !== null) {
+      setLightness(localSettings.getItem('is-light-theme') == 'true');
+    } else {
+      setLightness(true); // assume light theme
+    }
+
+    // update lightness value based on theme
+    function setLightness(lightTheme) {
+      lightness.value = lightTheme ? 74 : 40;
+
+      console.log("setting lightness to: ", lightness.value);
+    }
+
+    // on theme type change, set new lightness
+    localSettings.change("is-light-theme", function(_, isLight) {
+      setLightness(isLight == 'true');
+
+      console.log("islighttheme changed to: ", isLight);
+    });
+
     function hueToRGB(hue) {
       var a = 40*Math.cos(hue);
-      var b = 40*Math.sin(hue)
-      return converter([74, a, b]);
+      var b = 40*Math.sin(hue);
+
+      console.log([lightness.value, a, b]);
+
+      return converter([lightness.value, a, b]);
     }
 
     var goldenAngle = 2.39996322972865332;

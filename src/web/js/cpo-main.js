@@ -468,6 +468,7 @@
 
         // track theme in local settings
         localSettings.setItem('theme', curTheme);
+        localSettings.setItem('is-light-theme', curTheme == 'default');
       });
 
       localSettings.change("theme", function(_, newTheme) {
